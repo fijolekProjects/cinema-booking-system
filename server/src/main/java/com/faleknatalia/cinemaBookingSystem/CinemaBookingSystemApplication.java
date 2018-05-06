@@ -52,6 +52,7 @@ public class CinemaBookingSystemApplication implements CommandLineRunner {
 
     public void run(String... strings) throws Exception {
 
+        //TODO dodalbym w konfiguracji flage generateSampleData, i tutaj generowal dane jesli generateSampleData = true
         Movie movie1 = new Movie("The Prestige", "After a tragic accident two stage magicians engage in a battle to create the ultimate illusion whilst sacrificing everything they have to outwit the other.", 120, "http://1.fwcdn.pl/po/99/45/259945/7536864.6.jpg");
         Movie movie2 = new Movie("Catch me if you can", "A seasoned FBI agent pursues Frank Abagnale Jr. who, before this 19th birthday, successfully forged millions of dollars' worth of checks while posing as a Pan Am pilot, a doctor, and a legal prosecutor.", 125, "http://1.fwcdn.pl/po/23/62/32362/7519166.6.jpg");
         Movie movie3 = new Movie("12 Angry Men","A jury holdout attempts to prevent a miscarriage of justice by forcing his colleagues to reconsider the evidence.", 95, "http://1.fwcdn.pl/po/07/01/30701/7492190.6.jpg");
@@ -65,6 +66,7 @@ public class CinemaBookingSystemApplication implements CommandLineRunner {
         cinemaHallRepository.save(cinemaHallOne);
         cinemaHallRepository.save(cinemaHallTwo);
 
+        //TODO tutaj mozesz zapisywac cale listy
         movieRepository.save(movie1);
         movieRepository.save(movie2);
         movieRepository.save(movie3);
@@ -87,6 +89,7 @@ public class CinemaBookingSystemApplication implements CommandLineRunner {
         ticketPriceRepository.save(ticketPriceForSenior);
         ticketPriceRepository.save(ticketPriceForStudent);
 
+        //TODO przeniesc wszystkie save'y w jedno miejsce na koncu, oddzielic generowanie danych od zapisywania danych - to jest bardzo wazne
     }
 
     @Bean

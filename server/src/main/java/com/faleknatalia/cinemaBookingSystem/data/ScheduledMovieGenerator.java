@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 public class ScheduledMovieGenerator {
@@ -24,6 +26,7 @@ public class ScheduledMovieGenerator {
     MovieRepository movieRepository;
 
 
+    //TODO private! i przeniesc na dol
     public List<ScheduledMovie> generateWhatsOn(long cinemaHallId, LocalDateTime day) {
         LocalDateTime lastMovieEnd = day.withHour(12);
         List<ScheduledMovie> scheduledMovies = new ArrayList<>();
@@ -42,7 +45,10 @@ public class ScheduledMovieGenerator {
     }
 
     public Map<LocalDateTime, List<ScheduledMovie>> generateWeekWhatsOn(long cinemaHallId, LocalDateTime day) {
+        //TODO allDates mozesz wyliczyc uzywajac streamow, bez while
+        //Stream.iterate(day, date -> date.plusDays(1)).limit(7).collect(Collectors.toList());
         LocalDateTime stop = day.plusWeeks(1);
+
 
         List<LocalDateTime> allDates = new ArrayList<>();
         LocalDateTime ld = day;
@@ -51,6 +57,8 @@ public class ScheduledMovieGenerator {
             ld = ld.plusDays(1);
         }
 
+        //TODO mappedWeek mozesz zrobic na streamach
+//        Map<LocalDateTime, List<ScheduledMovie>> mappedWeek = allDates.stream().collect(Collectors.toMap(dateTime -> dateTime, dateTime -> generateWhatsOn(cinemaHallId, dateTime)));
         Map<LocalDateTime, List<ScheduledMovie>> mappedWeek = new HashMap<>();
         for (LocalDateTime dateTime : allDates) {
             mappedWeek.put(dateTime, generateWhatsOn(cinemaHallId, dateTime));

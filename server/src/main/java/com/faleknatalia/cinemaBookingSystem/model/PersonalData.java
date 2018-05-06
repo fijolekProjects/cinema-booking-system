@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+//TODO przydalby sie tez wszedzie jakis komentarz ze robimy implements Serializable zeby mozna to bylo wrzucic do sesji
 @Entity
 public class PersonalData implements Serializable {
 

@@ -2,6 +2,7 @@ package com.faleknatalia.cinemaBookingSystem.model;
 
 import java.io.Serializable;
 
+//TODO ta klasa nie pasuje do tego pakietu, jedyna nie ma @Entity - moze lpeiej ja wrzucic do dto?
 public class ChosenSeatAndPrice implements Serializable {
 
     private long seatId;

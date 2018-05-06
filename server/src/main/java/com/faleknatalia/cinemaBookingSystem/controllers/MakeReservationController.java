@@ -45,6 +45,7 @@ public class MakeReservationController {
     @RequestMapping(value = "/cinemaHall/seats/choose/{scheduledMovieId}", method = RequestMethod.POST)
     public ResponseEntity<List<SeatReservationByScheduledMovie>> chosenSeat(HttpSession session, @PathVariable long scheduledMovieId, @RequestBody List<ChosenSeatAndPrice> chosenSeatsAndPrices) {
         List<Long> seatIds = chosenSeatsAndPrices.stream().map(seat -> seat.getSeatId()).collect(Collectors.toList());
+        //TODO wszystkie session.set przeniesc na sam koniec, kiedy juz nic nie moze sie zepsuc
         session.setAttribute("chosenSeatsAndPrices", chosenSeatsAndPrices);
         session.setAttribute("chosenMovieId", scheduledMovieId);
         return new ResponseEntity<>(seatReservationByScheduledMovieRepository.findBySeatSeatIdInAndScheduledMovieId(seatIds, scheduledMovieId), HttpStatus.OK);
@@ -56,6 +57,7 @@ public class MakeReservationController {
         if (validationResult.isPresent()) {
             throw new IllegalArgumentException(validationResult.get());
         } else {
+            //TODO wszystkie session.set przeniesc w jedno miejsce, obok siebie - to jest mutowanie, mutujmy w jednym miejscu
             session.setAttribute("personalData", personalData);
             List<ChosenSeatAndPrice> chosenSeatAndPrices = (List<ChosenSeatAndPrice>) session.getAttribute("chosenSeatsAndPrices");
             Reservation reservation = new Reservation((long) session.getAttribute("chosenMovieId"), personalData.getPersonId(), chosenSeatAndPrices);

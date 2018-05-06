@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 //TODO wydzielic do serwisow logike z controllerow
 @RestController
 public class PaymentController {
+    //TODO te stale przeniesc do konfiguracji
     private static final String clientId = "322611";
     private static final String clientSecret = "7bf401d342210d73b85081c0a2fae474";
 
@@ -60,6 +61,8 @@ public class PaymentController {
     public ResponseEntity<OrderResponse> saveReservationAndRedirectToPayment(HttpServletResponse response, HttpSession session) throws Exception {
         List<ChosenSeatAndPrice> chosenSeatAndPrices = (List<ChosenSeatAndPrice>) session.getAttribute("chosenSeatsAndPrices");
         List<Long> chosenSeatsIds = chosenSeatAndPrices.stream().map(chosenSeatAndPrice -> chosenSeatAndPrice.getSeatId()).collect(Collectors.toList());
+        //TODO staraj sie jak najbardziej oddzielic kod ktory cos wylicza od mutowania np.
+        //najpierw wyciagnij personalData i reservation, wygeneruj token, a potem dopiero uzyj repozytoriow i na koncu zinwaliduj sesje
         seatReservationByScheduledMovieRepository.setFalseForChosenSeat(chosenSeatsIds, (long) session.getAttribute("chosenMovieId"));
         //TODO Podmienić ticketPriceId ??
         PersonalData personalData = (PersonalData) session.getAttribute("personalData");
@@ -74,6 +77,7 @@ public class PaymentController {
         AccessToken accessToken = paymentService.generateAccessToken(clientId, clientSecret);
 
         if (devMode) {
+            //TODO wydzielic to wszystko do osobnej metody, ktora mozesz nazwac payuTestCode i wtedy ten komentarz nizej nie jest potrzebny :P
             //KOD DO TESTÓW
             Buyer buyer = new Buyer(
                     "naticinema@gmail.com",
@@ -121,6 +125,7 @@ public class PaymentController {
 
     @RequestMapping(value = "/notify", method = RequestMethod.POST)
     public void notify(NotificationResponse notificationResponse) throws Exception {
+        //TODO te odpowiedzi tez chcemy zapisywac w bazie, chcemy miec cala komunikacje pomiedzy nami i payu w bazie - to jest wazne!
         if (notificationResponse.getOrder().getStatus().equals("COMPLETED")) {
             sendEmail(Long.parseLong(notificationResponse.getOrder().getExtOrderId()));
         }

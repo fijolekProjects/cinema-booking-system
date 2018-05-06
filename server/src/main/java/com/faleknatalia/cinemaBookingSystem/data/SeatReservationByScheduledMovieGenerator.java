@@ -26,6 +26,8 @@ public class SeatReservationByScheduledMovieGenerator {
 
     public List<SeatReservationByScheduledMovie> generateSeatsReservationByScheduledMovies() {
         List<ScheduledMovie> scheduledMovies = scheduledMovieRepository.findAll();
+        //TODO sprobuj przepisac to na streamy scheduledMovies.map -
+        // jak masz taki pattern ze tworzysz pusta liste a pozniej cos do niej dodajesz o prawie na pewno mozna to przepisac na streamy i .map
         List<SeatReservationByScheduledMovie> seatReservationByScheduledMovies = new ArrayList<>();
         scheduledMovies.forEach(sm ->
                 {

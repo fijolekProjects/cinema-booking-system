@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+//Pomysl - mozna by dodac do maila qrcode z identyfikatorem transakcji - jak w lunie
 @Component
 public class EmailSender {
 

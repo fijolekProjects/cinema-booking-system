@@ -2,6 +2,7 @@ package com.faleknatalia.cinemaBookingSystem.payment;
 
 import java.util.List;
 
+//TODO te klaski typu Buyer albo OrderRequest mozesz przeniesc do pakietu np. payment.model zeby nie mieszaly sie z repozytorium i serwisem
 public class OrderRequest {
 
 
