@@ -11,6 +11,10 @@ import java.util.List;
 
 @Entity
 public class Reservation implements Serializable {
+    //TODO pamietasz moze dlaczego tutaj sa idiki `chosenMovieId` i `personalDataId` a nie cale obiekty? moze sprobujemy jeszcze raz zrobic tutaj obiekty?
+    //wtedy latwiej by sie zapisywalo do bazy rezerwacje
+    //sprobujmy na poczatek zamienic `personalDataId` na caly obiekt, wtedy nie bedzie trzeba robic
+    // personalDataRepository.save(personalData) i reservation.setPersonalDataId(personalDataId) przy zapisywaniu
     private long chosenMovieId;
 
     private long personalDataId;

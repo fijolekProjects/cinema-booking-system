@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ public class CinemaBookingSystemApplication implements CommandLineRunner {
 
         if (generateSampleData) {
 
+            //TODO do tworzenia Arrays.asList("a", "b");
             List<Movie> allMovies = new ArrayList<Movie>() {{
                 add(new Movie("The Prestige", "After a tragic accident two stage magicians engage in a battle to create the ultimate illusion whilst sacrificing everything they have to outwit the other.", 120, "http://1.fwcdn.pl/po/99/45/259945/7536864.6.jpg"));
                 add(new Movie("Catch me if you can", "A seasoned FBI agent pursues Frank Abagnale Jr. who, before this 19th birthday, successfully forged millions of dollars' worth of checks while posing as a Pan Am pilot, a doctor, and a legal prosecutor.", 125, "http://1.fwcdn.pl/po/23/62/32362/7519166.6.jpg"));
@@ -84,6 +86,7 @@ public class CinemaBookingSystemApplication implements CommandLineRunner {
             Map<LocalDateTime, List<ScheduledMovie>> weekWhatsOnForSecondCinemaHall =
                     scheduledMovieGenerator.generateWeekWhatsOn(cinemaHalls.get(1).getCinemaHallId(), LocalDateTime.now().withMinute(0).withSecond(0).withNano(0));
 
+            //TODO `scheduledMovie` uzyty w foreachu to jest lista List<ScheduledMovie>, wiec zamiencmy na scheduledMovies
             weekWhatsOnForFirstCinemaHall.values().stream()
                     .forEach(scheduledMovie -> scheduledMovieRepository.save(scheduledMovie));
             weekWhatsOnForSecondCinemaHall.values().stream()

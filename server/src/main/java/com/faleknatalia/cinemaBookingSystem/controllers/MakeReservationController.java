@@ -50,6 +50,7 @@ public class MakeReservationController {
 
     @RequestMapping(value = "/cinemaHall/addPerson", method = RequestMethod.POST)
     public ResponseEntity<String> createReservation(HttpSession session, @RequestBody PersonalData personalData) {
+        //TODO wystarczy `PersonalDataValidator.validate` bez `new`, to jest static wiec nie trzeba `new`
         Optional<String> validationResult = new PersonalDataValidator().validate(personalData);
         if (validationResult.isPresent()) {
             throw new IllegalArgumentException(validationResult.get());

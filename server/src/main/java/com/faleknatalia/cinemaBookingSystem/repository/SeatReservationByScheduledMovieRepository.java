@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface SeatReservationByScheduledMovieRepository extends JpaRepository<SeatReservationByScheduledMovie, Long> {
 
+    //TODO ta metoda slabo sie nazywa, trzeba ja nazwac bardziej biznesowo np. reserveSeat
     @Modifying
     @Query("update SeatReservationByScheduledMovie s set s.isFree = false where s.seat.seatId in (?1) and s.scheduledMovieId = ?2")
     int setFalseForChosenSeat(List<Long> seatId, long scheduledMovieId);

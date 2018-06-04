@@ -53,6 +53,9 @@ public class PaymentService {
     @Value("${paymentCustomerIp}")
     private String customerIp;
 
+    //TODO sprobuj uzywac restTemplate jako beana, przez autowired - tak by sie robilo w prawdziwej aplikacji,
+    // dzieki temu mozesz w jednym miejscu skonfigurowac klienta http.
+    // My nie bedziemy nic konfigurowac, jak zrobimy @Autowired RestTemplate, to spring nam tez zrobic new RestTemplate(), ale jak bysmy chcieli to mozemy to latwo nadpisac
     public AccessToken generateAccessToken(String client_id, String client_secret) {
 
         String request = String.format("grant_type=client_credentials&client_id=%s&client_secret=%s", client_id, client_secret);
@@ -64,6 +67,10 @@ public class PaymentService {
         return restTemplate.postForObject(paymentAuthorizationUrl, entity, AccessToken.class);
     }
 
+    //TODO zrobmy tak zeby ta metoda wygladala w ten sposob
+    //OrderRequest orderRequest = generateOrderRequest(...)
+    //saveOrderRequest(orderRequest);
+    //httpPostPayuOrder(orderRequest);
     public OrderResponse generateOrder(AccessToken token, String reservationId, long personalDataId, String clientId) throws JsonProcessingException {
         Reservation reservation = reservationRepository.findByReservationId(reservationId);
         PersonalData personalData = personalDataRepository.findOne(personalDataId);
@@ -72,6 +79,7 @@ public class PaymentService {
 
         Buyer buyer = new Buyer(personalData.getEmail(), personalData.getPhoneNumber(), personalData.getName(), personalData.getSurname());
 
+        //TODO taka stala typu "1" warto wyciagnac do zmiennej, bo nie da sie troche domyslic co to "1" oznacza
         List<Product> products = ticketPrices.stream().map(ticketPrice ->
                  new Product("Ticket", toCents(ticketPrice.getTicketValue()), "1"))
                 .collect(Collectors.toList());

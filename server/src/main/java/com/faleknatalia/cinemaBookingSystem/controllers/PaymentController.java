@@ -54,9 +54,11 @@ public class PaymentController {
     @Autowired
     private EmailSender emailSender;
 
+    //TODO nieuzywane
     @Autowired
     private OrderRequestDBRepository orderRequestDBRepository;
 
+    //TODO nieuzywane
     @Autowired
     private TicketPriceRepository ticketPriceRepository;
 
@@ -66,6 +68,7 @@ public class PaymentController {
     @Value("${dev_mode}")
     private boolean devMode;
 
+    //TODO moze zrobimy osobnego beana z tymi stalymi? Tutaj jest juz multum zaleznosci
     @Value("${clientId}")
     private String clientId;
 
@@ -122,6 +125,9 @@ public class PaymentController {
         logger.info("PayU notification response: \n" + notificationResponse);
     }
 
+    //TODO moze lepsza nazwa - np. invokeNotifyAsPayu?
+    //TODO mozemy tez wydzielic te testowe dane np zrobic jakas statyczne metode testNotificationResponse ktora
+    // bedzie zwracac NotificationResponse i tutaj jeje uzyjemy
     private void payuTestCode(Reservation reservation) throws Exception {
         Buyer buyer = new Buyer(
                 "naticinema@gmail.com",
