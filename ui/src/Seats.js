@@ -4,6 +4,10 @@ import './index.css';
 import {Redirect} from 'react-router-dom';
 import BackButton from "./BackButton";
 
+//TODO ten komponent mozna podzielic na kompnenty
+// - komponent wyswietlajacy wybrane siedzenia
+// - komponent wiersz, z ktorych bedzie sie skladac cala sala
+// wydzielenie do komponentow mozemy zrobic na samym koncu, jako osobna zmiana, bo to bedzie wiecej pracy
 class Seats extends Component {
 
   constructor(props) {
@@ -39,6 +43,8 @@ class Seats extends Component {
       })
   };
 
+  //TODO `this.state.chosenSeats.includes(seat)` - lepiej tutaj sprawdzac po seatId (po idikach jest zawsze najbezpieczniej) a nie po calym obiekcie, to nie bedzie zawsze dzialac
+  // np. kiedy podmienimy cos w srodku chosenSeats
   renderSeat = (oneSeat, rowIndex, colIndex) => {
     const seat = oneSeat[0];
     const seatClass = this.state.chosenSeats.includes(seat) ? "chosenSeat" : "freeSeat";
@@ -59,6 +65,10 @@ class Seats extends Component {
 
   };
 
+  //TODO niech ta metoda zwraca jeden element a nie liste jednoelementowa
+  //potem to co tutaj sie zwroci uzywasz tak
+  // const seat = oneSeat[0];
+  //co jest bez sensu
   findSeat = (hall, rowNumber, colNumber) => {
     //TODO ZAMIENIC NA ===
     const filteredList = Object.keys(hall).filter(key => key == rowNumber - 1);
@@ -88,6 +98,17 @@ class Seats extends Component {
     return ticketPrice[0].ticketValue
   }
 
+  //TODO tu jest troche pokrecone
+  //1. `chosenSeat.ticketPriceId = selectedPrice` - tak nie moze byc, tutaj mutujesz cos co jest w stanie, tak nie wolno.
+  // Najlepiej w ogole nie mutowac, ale mutowac obiektow z this.state nie wolno, react opiera sie na tym ze tutaj nic sie nie mutuje
+  // zamiast mutowac mozna zrobic tak
+  //return {
+  //   ...chosenSeat,
+  //   ticketPriceId: selectedPrice
+  // }
+  // to sie nazywa `spread operator`, przepisuje stary obiekt i nadpisuje ticketPriceId nowa wartosca
+  //2. seatsWithChosenPrices - tego w ogole nie uzywasz, a powinnas uzywac przy renderowaniu wybranych siedzen z cenami - trzebaby to wyprostowac
+  //np. wywalic seatsWithChosenPrices i uzywac tylko chosenSeats
   selectChange = (event, seat) => {
     const selectedPrice = event.target.value;
     const newChosenSeats = this.state.chosenSeats.map(chosenSeat => {
@@ -116,6 +137,9 @@ class Seats extends Component {
           maxCinemaHallSeats.map((rowNumber, rowIndexMax) => {
             const row = rowNumber.map((columnNumber, colIndex) => {
               const seat = this.findSeat(this.state.cinemaHall, rowIndexMax + 1, columnNumber)
+              //TODO tutaj 2 razy wolasz this.renderSeat co jest troche bez sensu, zrobmy jakos tak
+              // seat ? this.renderSeat(seat, rowIndexMax, colIndex) : ...
+              //kiedy juz this.findSeat bedzie zwracalo jeden element a nie liste
               return this.renderSeat(seat, rowIndexMax, colIndex) ? this.renderSeat(seat, rowIndexMax, colIndex) :
                 <li key={`${rowIndexMax}${colIndex}`} className={"emptySeat"}>0</li>;
             });

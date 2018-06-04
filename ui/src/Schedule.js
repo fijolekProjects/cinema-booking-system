@@ -35,6 +35,9 @@ class Schedule extends Component {
   }
 
   orderByActualDay = () => {
+    //TODO usunac duplikacje- zmienna `days`
+    //widze ze nie mozesz tutaj dac const days = this.days bo `splice` mutuje. Mozesz wydzielic liste dni do funkcji albo zrobic
+    // const days = _.cloneDeep(this.days) - to kopiuje zmienna
     const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
     const daysOrder = days.splice(0, days.indexOf(days[new Date().getDay()]));
     return days.concat(daysOrder);
@@ -47,6 +50,7 @@ class Schedule extends Component {
         <div className={"daysOfWeek"}>
           {
             this.orderByActualDay().map((day, idx) => {
+                //TODO przenazwic na dayClass
                 const chosenDay = this.state.actualDay === day ? "actualDay" : "otherDays";
                 return <span key={idx} className={chosenDay}
                              onClick={(event) => this.setState({actualDay: day})}>&emsp;{day}</span>
@@ -61,6 +65,7 @@ class Schedule extends Component {
             <th>DURATION</th>
           </tr>
           {grouppedByDay[this.state.actualDay] ? grouppedByDay[this.state.actualDay].map((movie, idx) => {
+            //TODO przenazwic na movieClass
             const selectedMovie = this.state.chosenMovie === movie ? "selectedMovie" : "otherMovies";
             return <tr className={selectedMovie} key={idx} onClick={(event) => {
               this.setState({chosenMovie: movie})

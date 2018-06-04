@@ -16,7 +16,14 @@ class PersonalData extends Component {
     }
   }
 
-
+  //TODO to mutowanie statusu blee, mozesz najpierw sprawdzic status i jesli jest inny niz 200 zrobic alert
+  //HttpService.postJson('cinemaHall/addPerson', person)
+  //       .then(results => {
+  //         if (results.status === 200) {
+  //           return results.text()
+  //         } else {
+  //           alert("Invalid data form")
+  //         }.then(reservationId => {...
   addPerson = (event) => {
     const person = {
       name: this.state.name,

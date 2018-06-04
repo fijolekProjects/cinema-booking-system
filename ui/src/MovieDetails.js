@@ -23,6 +23,7 @@ class MovieDetails extends Component {
   };
 
   render() {
+    //TODO usuwamy wszystkie console.log z aplikacji
     console.log(this.state.whatsOnByMovies)
     return (
       this.state.whatsOnByMovies ?
