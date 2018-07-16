@@ -9,26 +9,35 @@ import com.faleknatalia.cinemaBookingSystem.dto.ScheduledMovieDetailsDto;
 import com.faleknatalia.cinemaBookingSystem.model.PersonalData;
 import com.faleknatalia.cinemaBookingSystem.model.Seat;
 import com.faleknatalia.cinemaBookingSystem.model.SeatReservationByScheduledMovie;
+import com.faleknatalia.cinemaBookingSystem.payment.PaymentService;
+import com.faleknatalia.cinemaBookingSystem.payment.model.AccessToken;
 import com.faleknatalia.cinemaBookingSystem.payment.model.OrderRequest;
 import com.faleknatalia.cinemaBookingSystem.payment.model.OrderResponse;
 import com.faleknatalia.cinemaBookingSystem.ticket.SeatAndPriceDetails;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
 import java.util.Arrays;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class IntegrationTest {
     @Autowired
@@ -39,7 +48,6 @@ public class IntegrationTest {
 
     @Autowired
     private PaymentController paymentController;
-
 
     @Test
     public void integrationTest() throws Exception {
@@ -100,15 +108,16 @@ public class IntegrationTest {
         Assert.assertEquals(personalData.getName(), reservationSummaryDto.getPersonalData().getName());
 
         //PAYMENT
-        //given
-        MockHttpServletResponse httpServletResponse = new MockHttpServletResponse();
 
         //when
-        ResponseEntity<OrderResponse> orderResponseResponseEntity = paymentController.saveReservationAndRedirectToPayment(httpServletResponse, session);
+        ResponseEntity<OrderResponse> orderResponseResponseEntity = paymentController.saveReservationAndRedirectToPayment(session);
 
         //then
         OrderResponse orderResponse = orderResponseResponseEntity.getBody();
         Assert.assertEquals(200, orderResponseResponseEntity.getStatusCode().value());
+        Assert.assertEquals(new OrderResponse(
+                "1", "2", "AAA", "http://localhost/abcd"
+        ), orderResponse);
 
 
     }
