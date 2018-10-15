@@ -26,6 +26,16 @@ import java.util.stream.Collectors;
 @RestController
 public class MakeReservationController {
 
+// uwagi ogolne
+//- przy braku sesji na zakladce whatsOn leci http 500 - troche nieelegancko to wyglada. Moze lepiej tutaj explicite cos zwrocic, bez 500
+//- brakuje przynajmniej jakiegos zdisablowania/wyszarzenia przycisku pay zaraz po kliknieciu
+//- z ta walidacja formularza mozna sie klocic - no bo np jakis arab moze miec takie nazwisko ktorego nie obsluzy zaden regex itd - to jest troche sliska sprawa
+//- po przejsciu do widoku siedzen nie wiadomo na ktory film kupujemy bilet
+//- da sie wchodzic na urle dla starych filmow i da sie kupic dla nich bilet - tutaj powinna byc jakas walidacja i info we frontendzie, ze seans juz minal
+// przypomnij sobie:
+//  - jak dziala integracja z payu
+//  - jak dziala sesja
+
     @Autowired
     private SeatReservationByScheduledMovieRepository seatReservationByScheduledMovieRepository;
 
@@ -37,6 +47,8 @@ public class MakeReservationController {
         List<SeatReservationByScheduledMovie> cinemaHallSeats = seatReservationByScheduledMovieRepository.findAllByScheduledMovieId(scheduledMovieId);
         Map<Integer, List<SeatReservationByScheduledMovie>> groupByRow =
                 cinemaHallSeats.stream().collect(Collectors.groupingBy(seat -> seat.getSeat().getRowNumber()));
+        //1. te czyszczenie sesja najlepiej do osobnej metody w stulu `cleanupSession()`, bo tutaj za bardzo smieci i nie widac logiki zwracania siedzen
+        //2. a mzoe w ifie wystarczy tylko (extractedChosenMovieId != scheduledMovieId)?
         Long extractedChosenMovieId = Optional.ofNullable(SessionService.getChosenMovieId(session)).orElse(0L);
         List<ChosenSeatAndPrice> extractedChosenSeatsAndPrices = SessionService.getChosenSeatsAndPrices(session);
         List<ChosenSeatAndPrice> chosenSeatAndPrices = Optional.ofNullable(extractedChosenSeatsAndPrices).orElseGet(ArrayList::new);
